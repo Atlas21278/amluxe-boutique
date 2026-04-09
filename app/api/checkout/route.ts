@@ -11,7 +11,7 @@ function getBoutiqueUrl(): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { articleId } = await req.json()
+    const { articleId, clerkUserId } = await req.json()
 
     if (!articleId || typeof articleId !== 'number') {
       return NextResponse.json({ error: 'articleId requis' }, { status: 400 })
@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
       .slice(0, 1)
       .filter((url) => url.startsWith('https://'))
 
+    const shipping = getShipping(article.prixVente ?? 0)
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -38,7 +40,7 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'eur',
-            unit_amount: Math.round(article.prixVente * 100),
+            unit_amount: Math.round((article.prixVente ?? 0) * 100),
             product_data: {
               name: `${article.marque} ${article.modele}`,
               description: article.etat,
@@ -50,10 +52,10 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'eur',
-            unit_amount: getShipping(article.prixVente).prix * 100,
+            unit_amount: shipping.prix * 100,
             product_data: {
               name: 'Livraison Colissimo',
-              description: `France métropolitaine · ${getShipping(article.prixVente).label} ${getShipping(article.prixVente).couverture}`,
+              description: `France métropolitaine · ${shipping.label} ${shipping.couverture}`,
             },
           },
           quantity: 1,
@@ -61,6 +63,11 @@ export async function POST(req: NextRequest) {
       ],
       metadata: {
         articleId: String(articleId),
+        ...(clerkUserId && typeof clerkUserId === 'string' && {
+          clerkUserId,
+          prixArticle: String(article.prixVente ?? 0),
+          prixLivraison: String(shipping.prix),
+        }),
       },
       success_url: `${getBoutiqueUrl()}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${getBoutiqueUrl()}/annulation`,

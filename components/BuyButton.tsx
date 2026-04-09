@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
 import { toast } from 'sonner'
 
 export function BuyButton({ articleId, prix }: { articleId: number; prix: number }) {
   const [loading, setLoading] = useState(false)
+  const { userId } = useAuth()
 
   const handleBuy = async () => {
     setLoading(true)
@@ -12,7 +14,7 @@ export function BuyButton({ articleId, prix }: { articleId: number; prix: number
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ articleId }),
+        body: JSON.stringify({ articleId, clerkUserId: userId ?? null }),
       })
       const data = await res.json()
 
