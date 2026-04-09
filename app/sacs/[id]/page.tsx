@@ -5,7 +5,7 @@ import { getArticle, getArticles } from '@/lib/articles'
 import { PhotoGallery } from '@/components/PhotoGallery'
 import { BuyButton } from '@/components/BuyButton'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
