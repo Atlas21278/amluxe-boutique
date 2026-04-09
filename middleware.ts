@@ -7,8 +7,8 @@ export default authMiddleware({
     '/catalogue(.*)',
     '/article(.*)',
     '/api/public(.*)',
-    '/sign-in(.*)',
-    '/sign-up(.*)',
+    '/login(.*)',
+    '/register(.*)',
   ],
   // /compte/* est protégé par défaut (tout ce qui n'est pas publicRoutes)
 })
