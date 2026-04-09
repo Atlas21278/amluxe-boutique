@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navbar } from '@/components/Navbar'
@@ -12,17 +13,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <body>
-        <ThemeProvider>
-          <Navbar />
-          <main className="pt-16 min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <Toaster position="bottom-center" />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="fr" suppressHydrationWarning>
+        <body>
+          <ThemeProvider>
+            <Navbar />
+            <main className="pt-16 min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <Toaster position="bottom-center" />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
