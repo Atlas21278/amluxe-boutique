@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { getArticle } from '@/lib/articles'
+import { getShipping } from '@/lib/shipping'
 
 function getBoutiqueUrl(): string {
   const raw = process.env.NEXT_PUBLIC_BOUTIQUE_URL ?? 'http://localhost:3001'
@@ -49,10 +50,10 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: 'eur',
-            unit_amount: 1800, // 18€ Colissimo assuré jusqu'à 1500€
+            unit_amount: getShipping(article.prixVente).prix * 100,
             product_data: {
-              name: 'Livraison Colissimo assuré',
-              description: 'France métropolitaine · Suivi + assurance jusqu\'à 1500€',
+              name: 'Livraison Colissimo',
+              description: `France métropolitaine · ${getShipping(article.prixVente).label} ${getShipping(article.prixVente).couverture}`,
             },
           },
           quantity: 1,

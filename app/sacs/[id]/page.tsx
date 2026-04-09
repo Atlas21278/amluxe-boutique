@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getArticle, getArticles } from '@/lib/articles'
 import { PhotoGallery } from '@/components/PhotoGallery'
 import { BuyButton } from '@/components/BuyButton'
+import { getShipping } from '@/lib/shipping'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +37,7 @@ export default async function FicheProduit({ params }: { params: { id: string } 
   if (!article) notFound()
 
   const etatColor = ETAT_COLORS[article.etat] ?? 'var(--text-muted)'
+  const shipping = getShipping(article.prixVente ?? 0)
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -108,7 +110,7 @@ export default async function FicheProduit({ params }: { params: { id: string } 
               Livraison
             </p>
             {[
-              { icon: '📦', label: 'Colissimo suivi + assuré jusqu\'à 1500€', detail: 'France métropolitaine' },
+              { icon: '📦', label: `${shipping.label} (${shipping.couverture})`, detail: 'France métropolitaine' },
               { icon: '⏱', label: 'Expédition sous 24–48h', detail: 'Après confirmation du paiement' },
               { icon: '🔒', label: 'Emballage sécurisé discret', detail: 'Adapté aux articles de valeur' },
             ].map(({ icon, label, detail }) => (
@@ -125,7 +127,7 @@ export default async function FicheProduit({ params }: { params: { id: string } 
               style={{ borderColor: 'var(--border)' }}
             >
               <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Frais de port</span>
-              <span className="font-serif text-sm" style={{ color: 'var(--text)' }}>18 €</span>
+              <span className="font-serif text-sm" style={{ color: 'var(--text)' }}>{shipping.prix} €</span>
             </div>
           </div>
 
