@@ -2,26 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Variables Thème Crème Éditorial (défaut) ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #faf8f4;
+  --bg-card: #ffffff;
+  --bg-nav: rgba(250, 248, 244, 0.92);
+  --text: #1a1a1a;
+  --text-muted: #888888;
+  --accent: #9b7e5a;
+  --accent-light: #c4a882;
+  --border: #ede6db;
+  --shadow: rgba(0, 0, 0, 0.06);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Variables Thème Dark & Gold ── */
+.dark {
+  --bg: #080808;
+  --bg-card: #0f0f0f;
+  --bg-nav: rgba(8, 8, 8, 0.92);
+  --text: #ffffff;
+  --text-muted: #666666;
+  --accent: #c9a96e;
+  --accent-light: #e8cc9a;
+  --border: #1f1f1f;
+  --shadow: rgba(201, 169, 110, 0.08);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* ── Animation fade-in au scroll ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Respect prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
+
+/* ── Typographie ── */
+.font-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* ── Utilitaires thème ── */
+.bg-theme { background-color: var(--bg); }
+.bg-card { background-color: var(--bg-card); }
+.text-theme { color: var(--text); }
+.text-muted { color: var(--text-muted); }
+.text-accent { color: var(--accent); }
+.border-theme { border-color: var(--border); }
+.accent-bg { background-color: var(--accent); }
