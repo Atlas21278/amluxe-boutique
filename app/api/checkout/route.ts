@@ -46,6 +46,17 @@ export async function POST(req: NextRequest) {
           },
           quantity: 1,
         },
+        {
+          price_data: {
+            currency: 'eur',
+            unit_amount: 1800, // 18€ Colissimo assuré jusqu'à 1500€
+            product_data: {
+              name: 'Livraison Colissimo assuré',
+              description: 'France métropolitaine · Suivi + assurance jusqu\'à 1500€',
+            },
+          },
+          quantity: 1,
+        },
       ],
       metadata: {
         articleId: String(articleId),

@@ -99,6 +99,36 @@ export default async function FicheProduit({ params }: { params: { id: string } 
             </p>
           )}
 
+          {/* Livraison */}
+          <div
+            className="rounded-sm border p-4 mb-6 space-y-2"
+            style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-card)' }}
+          >
+            <p className="text-xs tracking-widest uppercase mb-3" style={{ color: 'var(--accent)' }}>
+              Livraison
+            </p>
+            {[
+              { icon: '📦', label: 'Colissimo suivi + assuré jusqu\'à 1500€', detail: 'France métropolitaine' },
+              { icon: '⏱', label: 'Expédition sous 24–48h', detail: 'Après confirmation du paiement' },
+              { icon: '🔒', label: 'Emballage sécurisé discret', detail: 'Adapté aux articles de valeur' },
+            ].map(({ icon, label, detail }) => (
+              <div key={label} className="flex items-start gap-3">
+                <span className="text-base">{icon}</span>
+                <div>
+                  <p className="text-xs" style={{ color: 'var(--text)' }}>{label}</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{detail}</p>
+                </div>
+              </div>
+            ))}
+            <div
+              className="mt-3 pt-3 border-t flex items-center justify-between"
+              style={{ borderColor: 'var(--border)' }}
+            >
+              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Frais de port</span>
+              <span className="font-serif text-sm" style={{ color: 'var(--text)' }}>18 €</span>
+            </div>
+          </div>
+
           <div className="border-t pt-8 mt-auto" style={{ borderColor: 'var(--border)' }}>
             <BuyButton articleId={article.id} prix={article.prixVente ?? 0} />
 
@@ -106,7 +136,7 @@ export default async function FicheProduit({ params }: { params: { id: string } 
               className="text-xs text-center mt-4"
               style={{ color: 'var(--text-muted)' }}
             >
-              Paiement 100% sécurisé via Stripe · Livraison assurée
+              Paiement sécurisé Stripe · Livraison Colissimo assuré incluse
             </p>
           </div>
         </div>
