@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { getArticle } from '@/lib/articles'
 
-const BOUTIQUE_URL = process.env.NEXT_PUBLIC_BOUTIQUE_URL ?? 'http://localhost:3001'
+function getBoutiqueUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_BOUTIQUE_URL ?? 'http://localhost:3001'
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw
+  return `https://${raw}`
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,8 +50,8 @@ export async function POST(req: NextRequest) {
       metadata: {
         articleId: String(articleId),
       },
-      success_url: `${BOUTIQUE_URL}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${BOUTIQUE_URL}/annulation`,
+      success_url: `${getBoutiqueUrl()}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBoutiqueUrl()}/annulation`,
     })
 
     return NextResponse.json({ url: session.url })
