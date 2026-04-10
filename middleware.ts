@@ -9,7 +9,6 @@ export default authMiddleware({
     '/catalogue(.*)',
     '/article(.*)',
     '/api/public(.*)',
-    '/api/debug-env',
     '/login(.*)',
     '/register(.*)',
   ],
